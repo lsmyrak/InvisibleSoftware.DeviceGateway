@@ -1,0 +1,6 @@
+@InvisibleSoftware.DeviceGateway.Api_HostAddress = http://localhost:5062
+
+GET {{InvisibleSoftware.DeviceGateway.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
