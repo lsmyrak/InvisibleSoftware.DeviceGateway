@@ -1,10 +1,6 @@
 ﻿using InvisibleSoftware.DeviceGateway.Application.Auth.Commands.Dtos;
+using InvisibleSoftware.DeviceGateway.Application.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InvisibleSoftware.DeviceGateway.Application.Auth.Commands
 {
@@ -13,7 +9,7 @@ namespace InvisibleSoftware.DeviceGateway.Application.Auth.Commands
        public LoginDto LoginDto { get; set; }
         public LoginCommand(LoginDto loginDto)
         {
-            LoginDto = loginDto ?? throw new ArgumentNullException(nameof(loginDto));
+            LoginDto = loginDto;
         }
     }
 
@@ -24,12 +20,23 @@ namespace InvisibleSoftware.DeviceGateway.Application.Auth.Commands
 
     public class LoginResponseHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
-        public Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+        private readonly IAuthService _authService;
+        public LoginResponseHandler(IAuthService authService)
         {
-            // Here you would typically validate the user credentials and generate a token
-            // For demonstration purposes, we will return a dummy token
-            var token = "dummy_token"; // Replace with actual token generation logic
-            return Task.FromResult(new LoginResponse { Token = token });
+            _authService = authService;
+        }
+        public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _authService.LoginAsync(request.LoginDto);
+            if (result.Success)
+            return new LoginResponse
+            {
+                Token = result.Token
+            };
+            else
+            {
+                throw new UnauthorizedAccessException(string.Join(", ", result.Errors));
+            }
         }
     }
 }

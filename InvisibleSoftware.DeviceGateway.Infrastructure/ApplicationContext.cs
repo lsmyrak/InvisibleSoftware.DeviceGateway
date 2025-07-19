@@ -1,9 +1,10 @@
 ﻿using InvisibleSoftware.Devicegateway.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace InvisibleSoftware.DeviceGateway.Infrastructure
 {
-    public class ApplicationContext:DbContext
+    public class ApplicationContext : IdentityDbContext<User>
     {
         public ApplicationContext()
         {            
@@ -12,7 +13,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure
         {
         }
 
-        public DbSet<CommandHistory> CommanHistories { get; set; }
+        public DbSet<CommandHistory> CommandHistories { get; set; }
         public DbSet<Device> Devices { get; set; }        
         public DbSet<DeviceGroup> DeviceGroups { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
