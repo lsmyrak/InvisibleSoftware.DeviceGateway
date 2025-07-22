@@ -15,13 +15,15 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
-        public AuthService(IConfiguration configuration, SignInManager<User> signInManager, UserManager<User> userManager)
+        private readonly ApplicationContext _context;
+        public AuthService(IConfiguration configuration, SignInManager<User> signInManager, UserManager<User> userManager, ApplicationContext context)
         {
             _configuration = configuration;
             _signInManager = signInManager;
             _userManager = userManager;
+            _context = context;
         }
-        public Task<bool> ChangePasswordAsync(Guid userId, string currentPassword, string newPassword)
+        public Task<bool> ChangePasswordAsync(Guid userId, string currentPassword, string newPassword, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -33,15 +35,12 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
 
             var claims = new List<Claim>
             {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim(ClaimTypes.Email, user.Email),
-        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        new Claim(ClaimTypes.Name, user.UserName)
-    };
-
-
-
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -57,7 +56,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<AuthResult> LoginAsync(LoginDto loginDto)
+        public async Task<AuthResult> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken)
         {
 
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
@@ -73,29 +72,68 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public Task<AuthResult> RegisterAsync(RegisterDto registerDto)
+        public async Task<AuthResult> RegisterAsync(RegisterDto registerDto, CancellationToken cancellationToken)
+        {
+            var user = new User
+            {
+                UserName = registerDto.UserName,
+                Email = registerDto.Email,
+                Code =  GenerateUserCode(),
+                Name = registerDto.UserName,
+                Description = $"Created User :  {registerDto.UserName}",
+
+            };
+
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            if (!result.Succeeded)
+            {
+                return new AuthResult
+                {
+                    Success = false,
+                    Errors = result.Errors.Select(e => e.Description).ToArray()
+                };
+            }
+            var token = GenerateJwtToken(user);
+            return new AuthResult
+            {
+                Success = true,
+                Token = token
+            };
+        }
+
+        public Task<bool> RequestPasswordResetAsync(string email, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RequestPasswordResetAsync(string email)
+        public Task<bool> ResetPasswordAsync(string token, string newPassword, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> ResetPasswordAsync(string token, string newPassword)
+        public Task<bool> SendEmailVerificationAsync(Guid userId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> SendEmailVerificationAsync(Guid userId)
+        public Task<bool> VerifyEmailAsync(string token, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
+        public   string GenerateUserCode()
+        { 
+            string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
+            var today = DateTime.UtcNow.Date;
+            var tomorrow = today.AddDays(1);
 
-        public Task<bool> VerifyEmailAsync(string token)
-        {
-            throw new NotImplementedException();
+            int countToday =  _context.Users
+                .Where(h => h.CreatedAt >= today && h.CreatedAt < tomorrow)
+                .Count();
+
+            int nextNumber = countToday + 1;
+            string numberPart = nextNumber.ToString("D4");
+
+            return $"User/{datePart}/{numberPart}";
         }
     }
 }

@@ -27,7 +27,7 @@ namespace InvisibleSoftware.DeviceGateway.Application.Auth.Commands
         }
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var result = await _authService.LoginAsync(request.LoginDto);
+            var result = await _authService.LoginAsync(request.LoginDto,cancellationToken);
             if (result.Success)
             return new LoginResponse
             {

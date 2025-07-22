@@ -1,10 +1,11 @@
 ﻿using InvisibleSoftware.DeviceGateway.Application.Auth.Commands;
 using InvisibleSoftware.DeviceGateway.Application.Auth.Commands.Dtos;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace InvisibleSoftware.DeviceGateway.Api.Controllers
+namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Auth
 {
     [ApiController]
     [Route("[controller]")]
@@ -21,15 +22,17 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var token = await  _mediator.Send(new LoginCommand(loginDto)); 
+            var token = await _mediator.Send(new LoginCommand(loginDto)); 
             return Ok(token);
         }
 
         [HttpPost("register")]
-        public IActionResult Register()
+        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
-            return Ok();
+            var result =  await _mediator.Send(new RegisterCommand(registerDto));
+            return Ok(result);
         }
+        [Authorize]
         [HttpPost("logout")]
         public IActionResult Logout()
         {

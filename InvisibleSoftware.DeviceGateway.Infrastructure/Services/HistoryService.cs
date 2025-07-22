@@ -11,13 +11,15 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
         {
             _context = context;
         }
-        public async Task<string> GenerateHistoryCodeAsync(CancellationToken cancellationToken)
+        public  string GenerateHistoryCode()
         {
             string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
-     
-            int countToday = await _context.CommandHistories
-                .Where(h => h.CreatedAt.Date == DateTime.UtcNow.Date)
-                .CountAsync();
+            var today = DateTime.UtcNow.Date;
+            var tomorrow = today.AddDays(1);
+
+            int countToday =  _context.Users
+                .Where(h => h.CreatedAt >= today && h.CreatedAt < tomorrow)
+                .Count();
 
             int nextNumber = countToday + 1;
             string numberPart = nextNumber.ToString("D4");

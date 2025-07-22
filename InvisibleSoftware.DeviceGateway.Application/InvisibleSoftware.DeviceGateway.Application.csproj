@@ -26,4 +26,8 @@
     <ProjectReference Include="..\InvisibleSoftware.Devicegateway.Domain\InvisibleSoftware.Devicegateway.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Device\Commands\" />
+  </ItemGroup>
+
 </Project>

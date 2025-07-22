@@ -106,7 +106,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             try
             {
                 var result = await _mqttClient.PublishAsync(message, cancellationToken);
-                var code = await _historyService.GenerateHistoryCodeAsync(cancellationToken);
+                var code =  _historyService.GenerateHistoryCode();
 
                 await _historyService.SaveEvent(new CommandHistory
                 {
@@ -118,7 +118,8 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                     CreatedAt = DateTime.UtcNow,
                     Description = $"Sent MQTT message to topic {mqttPayloadOrder.MqttPayload.Topic} with payload {mqttPayloadOrder.MqttPayload.Payload}",
                     Version = 1,
-                    Name = $"{eventName}_{mqttPayloadOrder.MqttPayload.Device}"
+                    Name = $"{eventName}_{mqttPayloadOrder.MqttPayload.Device}",
+                    CreateByFunction = nameof(MqttService)
                 }, cancellationToken);
                 return result.IsSuccess;
             }
