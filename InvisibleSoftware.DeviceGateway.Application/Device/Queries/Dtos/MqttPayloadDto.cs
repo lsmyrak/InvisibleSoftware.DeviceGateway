@@ -1,4 +1,6 @@
-﻿namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries.Dtos
+﻿using InvisibleSoftware.DeviceGateway.Application.Common.Shared.Dtos;
+
+namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries.Dtos
 {
     public class MqttPayloadDto:BaseDto
     {

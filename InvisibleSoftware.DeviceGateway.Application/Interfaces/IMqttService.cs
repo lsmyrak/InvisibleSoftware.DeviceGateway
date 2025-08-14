@@ -6,6 +6,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
     {
         Task<bool> ConnectAsync(CancellationToken cancellationToken);
         Task<bool> SendAsync(MqttPayloadOrder mqttPayloadOrder, string eventName, CancellationToken cancellationToken);
+        Task<bool> SendAsync(Guid payloadId, string eventName, CancellationToken cancellationToken);
         Task<TResult> SendRequestAsync<TResult>(string request, string response, TimeSpan timeout, string payload, CancellationToken cancellationToken);
     }
 }

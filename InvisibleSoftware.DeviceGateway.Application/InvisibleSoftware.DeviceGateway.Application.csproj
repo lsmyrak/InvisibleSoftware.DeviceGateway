@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Room\Queries\Dtos\BaseDto.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="8.3.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageReference Include="MediatR" Version="13.0.0" />
@@ -24,10 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InvisibleSoftware.Devicegateway.Domain\InvisibleSoftware.Devicegateway.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Device\Commands\" />
   </ItemGroup>
 
 </Project>

@@ -5,8 +5,7 @@ using MediatR;
 namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries
 {
     public class GetAccessibleDevicesWithRoomsQuery : IRequest<List<AccessibleDeviceWithRoomDto>>
-    {
-
+    {                 
     }
     public class GetAccessibleDevicesWithRoomsQueryHandler : IRequestHandler<GetAccessibleDevicesWithRoomsQuery, List<AccessibleDeviceWithRoomDto>>
     {
@@ -17,8 +16,8 @@ namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries
         }
         public async Task<List<AccessibleDeviceWithRoomDto>> Handle(GetAccessibleDevicesWithRoomsQuery request, CancellationToken cancellationToken)
         {
-            var mappedDevice = await _deviceAccessService.GetAccessibleDevicesWithRoomsAsync();
-            return mappedDevice;
+            var devices = await _deviceAccessService.GetAccessibleDevicesWithRoomsAsync();
+            return  devices.Select(m=> AccessibleDeviceWithRoomDto.Convert(m)).ToList();
         }
     }
 }

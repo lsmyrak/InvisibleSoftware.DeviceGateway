@@ -74,11 +74,20 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
 
         public async Task<AuthResult> RegisterAsync(RegisterDto registerDto, CancellationToken cancellationToken)
         {
-            var user = new User
+            var user = await _userManager.FindByEmailAsync(registerDto.Email);
+            if (user != null)
+            {
+                return new AuthResult
+                {
+                    Success = false,
+                    Errors = new[] { "User with this email already exists" }
+                };
+            }
+            user = new User
             {
                 UserName = registerDto.UserName,
                 Email = registerDto.Email,
-                Code =  GenerateUserCode(),
+                Code = GenerateUserCode(),
                 Name = registerDto.UserName,
                 Description = $"Created User :  {registerDto.UserName}",
 
@@ -120,13 +129,13 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
         {
             throw new NotImplementedException();
         }
-        public   string GenerateUserCode()
-        { 
+        public string GenerateUserCode()
+        {
             string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
             var today = DateTime.UtcNow.Date;
             var tomorrow = today.AddDays(1);
 
-            int countToday =  _context.Users
+            int countToday = _context.Users
                 .Where(h => h.CreatedAt >= today && h.CreatedAt < tomorrow)
                 .Count();
 

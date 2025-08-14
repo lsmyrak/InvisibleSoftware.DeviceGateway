@@ -106,7 +106,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             try
             {
                 var result = await _mqttClient.PublishAsync(message, cancellationToken);
-                var code =  _historyService.GenerateHistoryCode();
+                var code = _historyService.GenerateHistoryCode();
 
                 await _historyService.SaveEvent(new CommandHistory
                 {
@@ -135,7 +135,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             var tcs = new TaskCompletionSource<string>();
             _pendingRequests[response] = tcs;
 
-           var mqttPlayloadOrder =  new MqttPayloadOrder
+            var mqttPlayloadOrder = new MqttPayloadOrder
             {
                 MqttPayload = new MqttPayload
                 {
@@ -156,6 +156,19 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             {
                 throw new TimeoutException($"No response on topic {response} within {timeout.TotalSeconds}s");
             }
+        }
+
+        public Task<bool> SendAsync(Guid payloadId, string eventName, CancellationToken cancellationToken)
+        {
+            var mqttPayloadOrder = _context.MqttPayloadOrders
+                .Include(m => m.MqttPayload)
+                .SingleOrDefault(m => m.Id == payloadId);
+            if (mqttPayloadOrder == null)
+            {
+                _logger.LogError("MqttPayloadOrder with ID {PayloadId} not found", payloadId);
+                return Task.FromResult(false);
+            }
+            return SendAsync(mqttPayloadOrder, eventName, cancellationToken);
         }
     }
 }

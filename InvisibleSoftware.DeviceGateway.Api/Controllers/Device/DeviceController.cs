@@ -1,4 +1,5 @@
-﻿using InvisibleSoftware.DeviceGateway.Application.Device.Queries;
+﻿using InvisibleSoftware.DeviceGateway.Application.Device.Commands;
+using InvisibleSoftware.DeviceGateway.Application.Device.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +18,21 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Device
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [HttpGet("get-device-with-rooms")]
+        [HttpGet("device-with-rooms")]
         [Authorize]
         public async Task<IActionResult> GetDeviceWithRoom()
         {
            var deviceWithRoom  = await _mediator.Send(new GetAccessibleDevicesWithRoomsQuery());
             return Ok(deviceWithRoom);
         }
+
+        [HttpPost("execute-command/{payloadId}")]
+        [Authorize]
+        public async Task<IActionResult> ExecuteCommand(Guid payloadId)
+        {
+            await _mediator.Send(new RunMqttCommand(payloadId));
+            return Ok();
+        }
+
     }
 }
