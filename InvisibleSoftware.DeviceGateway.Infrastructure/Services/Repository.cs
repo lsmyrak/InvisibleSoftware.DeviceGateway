@@ -27,9 +27,9 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 
-        public Task<T> GetByIdAsync<T>(Guid id, CancellationToken cancellationToken) where T : class
+        public async Task<T> GetByIdAsync<T>(Guid id, CancellationToken cancellationToken) where T : class
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().FindAsync(id,cancellationToken);
         }
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken)

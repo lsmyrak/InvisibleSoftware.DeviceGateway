@@ -20,16 +20,16 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Auth
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
-            var token = await _mediator.Send(new LoginCommand(loginDto));
+            var token = await _mediator.Send(command);
             return Ok(token);
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        public async Task<IActionResult> Register([FromBody] RegisterCommand command)
         {
-            var result = await _mediator.Send(new RegisterCommand(registerDto));
+            var result = await _mediator.Send(command);
             return Ok(result);
         }
         [Authorize]
@@ -47,9 +47,11 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Auth
         [Authorize]
         public async Task<IActionResult> AddRole([FromBody] AddRoleCommand command)
         {
-            await _mediator.Send(command);
-            return Ok("Role added successfully.");
+            var roleId = await _mediator.Send(command);
+            var role = await _mediator.Send(new GetRoleByIdQuery(roleId));
+            return CreatedAtAction(nameof(GetRoleById), new { id = roleId }, role);
         }
+
         [HttpPost("user-role-management")]
         [Authorize]
         public async Task<IActionResult> AddRoleToUser([FromBody] UserRoleManagementCommand command)
@@ -61,8 +63,19 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Auth
         [Authorize]
         public async Task<IActionResult> LoopupRole()
         {
-            return Ok( await _mediator.Send(new GetRoleLookupQuery()));
+            return Ok(await _mediator.Send(new GetRoleLookupQuery()));
         }
+        [HttpGet("role/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetRoleById(Guid id)
+        {
+            var role = await _mediator.Send(new GetRoleByIdQuery(id));
+            if (role == null)
+            {
+                return NotFound();
+            }
+            return Ok(role);
 
+        }
     }
 }
