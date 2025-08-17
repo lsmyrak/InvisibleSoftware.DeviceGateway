@@ -12,5 +12,6 @@ namespace InvisibleSoftware.Devicegateway.Domain
         public int Version { get; set; } = 1;
         public bool IsDeleted { get; set; } = false;
         public bool isEnabled { get; set; } = true;
+        public virtual List<Role> Role { get; set; } = new List<Role>();
     }
 }

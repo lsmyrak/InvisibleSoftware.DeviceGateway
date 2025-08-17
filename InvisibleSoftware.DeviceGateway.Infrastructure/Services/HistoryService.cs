@@ -1,6 +1,5 @@
 ﻿using InvisibleSoftware.Devicegateway.Domain;
 using InvisibleSoftware.DeviceGateway.Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
 {

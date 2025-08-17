@@ -1,4 +1,5 @@
-﻿using InvisibleSoftware.DeviceGateway.Application.Device.Commands;
+﻿using InvisibleSoftware.DeviceGateway.Application.Common.Shared.Dtos;
+using InvisibleSoftware.DeviceGateway.Application.Device.Commands;
 using InvisibleSoftware.DeviceGateway.Application.Device.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +23,7 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Device
         [Authorize]
         public async Task<IActionResult> GetDeviceWithRoom()
         {
-           var deviceWithRoom  = await _mediator.Send(new GetAccessibleDevicesWithRoomsQuery());
+            var deviceWithRoom = await _mediator.Send(new GetAccessibleDevicesWithRoomsQuery());
             return Ok(deviceWithRoom);
         }
 
@@ -34,5 +35,29 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Device
             return Ok();
         }
 
+        [HttpGet("lookup-device-type")]
+        public async Task<LookupResponse<NameRelatedDto>> GetLoopupDeviceTypes()
+        {
+            return await _mediator.Send(new GetDeviceTypeLookupQuery());
+        }
+
+        [HttpGet("lookup-device-group")]
+        public async Task<LookupResponse<NameRelatedDto>> GetLoopupDeviceGroup()
+        {
+            return await _mediator.Send(new GetDeviceGroupLookupQuery());
+        }
+        [HttpGet("loopup-room")]
+        public async Task<LookupResponse<NameRelatedDto>> GetLoopuRooms()
+        {
+            return await _mediator.Send(new GetRoomLookupQuery());
+        }
+
+        [HttpPost("device/add")]
+        [Authorize(Roles = "Admin,DeviceManager")]
+        public async Task<IActionResult> AddDevice([FromBody] AddDeviceCommand command)
+        {           
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
     }
 }

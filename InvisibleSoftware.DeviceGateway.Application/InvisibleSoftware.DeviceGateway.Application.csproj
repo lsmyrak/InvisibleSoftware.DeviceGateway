@@ -27,7 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InvisibleSoftware.Devicegateway.Domain\InvisibleSoftware.Devicegateway.Domain.csproj" />
+    <ProjectReference Include="..\InvisibleSoftware.Devicegateway.Domain\InvisibleSoftware.Devicegateway.Domain.csproj" />	
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Settings\Queries\" />
   </ItemGroup>
 
 </Project>

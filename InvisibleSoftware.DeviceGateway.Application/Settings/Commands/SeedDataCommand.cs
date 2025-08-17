@@ -1,14 +1,8 @@
 ﻿using InvisibleSoftware.DeviceGateway.Application.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace InvisibleSoftware.DeviceGateway.Application.Settings
+namespace InvisibleSoftware.DeviceGateway.Application.Settings.Commands
 {
     public class SeedDataCommand:IRequest<Unit>
     {

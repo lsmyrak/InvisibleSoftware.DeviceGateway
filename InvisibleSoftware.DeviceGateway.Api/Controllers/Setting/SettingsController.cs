@@ -1,5 +1,6 @@
-﻿using InvisibleSoftware.DeviceGateway.Application.Settings;
+﻿using InvisibleSoftware.DeviceGateway.Application.Settings.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Setting
@@ -22,5 +23,28 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Setting
             await _mediator.Send(new SeedDataCommand(), cancellationToken);
             return Ok("Seeding done.");
         }
+
+        [HttpPost("add-device-type")]
+        [Authorize(Roles = "Admin,DeviceManager")]
+        public async Task<IActionResult> AddDeviceType([FromBody] AddDeviceTypeCommand command)
+        {
+            if (command == null)
+            {
+                return BadRequest("Command cannot be null.");
+            }
+            await _mediator.Send(command);
+            return Ok("Device type added successfully.");
+        }
+        [HttpPost("add-device-group")]
+        [Authorize(Roles = "Admin,DeviceManager")]
+        public async Task<IActionResult> AddDeviceGroup([FromBody] AddDeviceGroupCommand command)
+        {
+            if (command == null)
+            {
+                return BadRequest("Command cannot be null.");
+            }
+            await _mediator.Send(command);
+            return Ok("Device group added successfully.");
+        }       
     }
 }

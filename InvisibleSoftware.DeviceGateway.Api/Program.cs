@@ -95,6 +95,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     containerBuilder.RegisterType<MqttService>().As<IMqttService>().InstancePerLifetimeScope();
     containerBuilder.RegisterType<DatabaseSeederService>().As<IDatabaseSeederService>().InstancePerLifetimeScope();
     containerBuilder.RegisterType<DeviceAccessService>().As<IDeviceAccessService>().InstancePerLifetimeScope();
+    containerBuilder.RegisterType<Repository>().As<IRepository>().InstancePerLifetimeScope();
     containerBuilder.RegisterAssemblyTypes(typeof(IMediator).Assembly)
     .AsImplementedInterfaces();
 });
