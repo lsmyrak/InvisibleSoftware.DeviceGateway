@@ -118,7 +118,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                     CreatedAt = DateTime.UtcNow,
                     Description = $"Sent MQTT message to topic {mqttPayloadOrder.MqttPayload.Topic} with payload {mqttPayloadOrder.MqttPayload.Payload}",
                     Version = 1,
-                    Name = $"{eventName}_{mqttPayloadOrder.MqttPayload.Device}",
+                    Name = $"{eventName}_{mqttPayloadOrder.MqttPayload.Device.Name}",
                     CreateByFunction = nameof(MqttService)
                 }, cancellationToken);
                 return result.IsSuccess;
@@ -162,7 +162,9 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
         {
             var mqttPayloadOrder = _context.MqttPayloadOrders
                 .Include(m => m.MqttPayload)
-                .SingleOrDefault(m => m.Id == payloadId);
+                .Include(m => m.Device).Include(m => m.Device.Room)
+
+                .SingleOrDefault(m => m.MqttPayload.Id == payloadId);
             if (mqttPayloadOrder == null)
             {
                 _logger.LogError("MqttPayloadOrder with ID {PayloadId} not found", payloadId);
