@@ -33,7 +33,7 @@ namespace InvisibleSoftware.DeviceGateway.Application.Room.Commands
                 throw new ArgumentNullException(nameof(request), "Request cannot be null");
             }
             var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            if(CheckPermission(userId,request.Id))
+            if(!CheckPermission(userId,request.Id))
             {
                 _logger.LogWarning("User {UserId} does not have permission to execute MQTT command with ID: {Id}", userId, request.Id);
                 return false;
