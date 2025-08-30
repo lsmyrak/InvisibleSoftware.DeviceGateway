@@ -2,8 +2,8 @@
 import pl from './pl.json';
 
 export const i18n = createI18n({
-    legacy: false, // Używamy Composition API
-    locale: 'pl',  // Domyślny język
+    legacy: false,
+    locale: 'pl',
     fallbackLocale: 'en',
     messages: {
         pl,     
