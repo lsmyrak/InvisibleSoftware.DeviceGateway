@@ -1,16 +1,16 @@
 <template>
   <div v-for="room in groupedRooms" :key="room.name" class="room-block">
-    <h2>{{ room.name }}</h2>
+    <h2>{{ $t(room.name) }}</h2>
 
     <div v-for="device in room.devices" :key="device.id" class="device-block">
       <div class="device-header" @click="toggleDevice(device.id)">
-        <strong>{{ device.name }}</strong>
+        <strong>{{ $t(device.name) }}</strong>
       </div>
 
       <ul v-if="expandedDevices.includes(device.id)" class="payload-list">
         <li v-for="order in sortedOrders(device)" :key="order.id">
           <button @click="executeOrder(order.mqttPayload.id)">
-            {{ order.mqttPayload.displayCommandName }}
+            {{ $t(order.mqttPayload.displayCommandName) }}
           </button>
         </li>
       </ul>
@@ -60,9 +60,8 @@ function sortedOrders(device: Device): MqttPayloadOrder[] {
 }
 
 function executeOrder(payloadId: string) {
-  console.log('Executing order for payload:', payloadId)
-  api.post(`/api/Room/execute-command/${payloadId}`).catch(error => {
-    console.error('Error executing order:', error)
+  
+  api.post(`/api/Room/execute-command/${payloadId}`).catch(error => {    
   })
   
 }

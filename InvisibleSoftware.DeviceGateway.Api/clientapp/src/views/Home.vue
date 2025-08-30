@@ -6,15 +6,19 @@
 </template>
 
 <script setup lang="ts">
-import Tile from '@/components/ContainerTitle.vue'
+    import Tile from '@/components/ContainerTitle.vue'
+   import { useRouter } from 'vue-router';
 
-function goToRooms() {
-  console.log('Przejście do widoku Pokoi')  
-}
+  const router = useRouter();
+ 
+  function goToRooms() {
+   router.push('/rooms') 
+  }
 
-function goToSettings() {
-  console.log('Przejście do widoku Ustawień')
-}
+  function goToSettings() {
+   router.push('/settings')
+ }
+ 
 </script>
 
 <style scoped>

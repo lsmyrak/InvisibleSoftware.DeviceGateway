@@ -1,6 +1,7 @@
 ﻿using InvisibleSoftware.Devicegateway.Domain;
 using InvisibleSoftware.DeviceGateway.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
 {
@@ -12,7 +13,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             _context = context;
         }
 
-        public async Task AddAsync<T>(T entity,CancellationToken cancellationToken) where T : class
+        public async Task AddAsync<T>(T entity, CancellationToken cancellationToken) where T : class
         {
             await _context.Set<T>().AddAsync(entity);
         }
@@ -29,7 +30,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
 
         public async Task<T> GetByIdAsync<T>(Guid id, CancellationToken cancellationToken) where T : class
         {
-            return await _context.Set<T>().FindAsync(id,cancellationToken);
+            return await _context.Set<T>().FindAsync(id, cancellationToken);
         }
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
@@ -44,13 +45,13 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             _context.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
-        public string GenerateCode<T>()  where T : BaseAggregate
+        public string GenerateCode<T>() where T : BaseAggregate
         {
             string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
             var today = DateTime.UtcNow.Date;
             var tomorrow = today.AddDays(1);
 
-            int countToday =  _context.Set<T>()
+            int countToday = _context.Set<T>()
                 .Where(h => h.CreatedAt >= today && h.CreatedAt < tomorrow)
                 .Count();
 
@@ -58,6 +59,21 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             string numberPart = nextNumber.ToString("D4");
 
             return $"{datePart}/{numberPart}";
+        }
+
+        public async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>>? include = null, CancellationToken cancellationToken = default) where T : class
+        {
+            IQueryable<T> query = _context.Set<T>();
+            if (include != null)
+            {
+                query = include(query);
+            }
+            return await query.FirstOrDefaultAsync(predicate, cancellationToken);
+
+        }
+        public async Task<bool> AnyAsync<T>(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default) where T : class
+        {
+            return await _context.Set<T>().AnyAsync(predicate, cancellationToken);
         }
     }
 }

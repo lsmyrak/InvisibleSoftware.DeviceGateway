@@ -8,7 +8,11 @@
 
 <script setup lang="ts">
     import { reactive } from 'vue';
+    import { useRouter, useRoute } from 'vue-router'
     import api from '@/services/api'
+
+    const router = useRouter();
+    const route = useRoute();
 
     interface LoginForm {
         email: string
@@ -31,6 +35,12 @@
             })
             const token = response.data.token
             localStorage.setItem('devicegateway.token', token)
+            const redirectPath = (route.query.redirect as string) || '/';
+            if (redirectPath) {
+                router.push(redirectPath);
+            } else {
+                router.push('/');
+            }
 
         } catch (error) {
             console.log("błąd logowania");
