@@ -38,7 +38,7 @@ namespace InvisibleSoftware.DeviceGateway.Application.Device.Commands
             {
                 Name = request.Device.Name,
                 Description = request.Device.Description,
-                Code = $"Device/{_repository.GenerateCode<Devicegateway.Domain.Device>()}",
+                Code = _repository.GenerateCode<Devicegateway.Domain.Device>(),
                 IpAddress = request.Device.IpAddress,
                 DeviceType = deviceType,
                 Room = room,

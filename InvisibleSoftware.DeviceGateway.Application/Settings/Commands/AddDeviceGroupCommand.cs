@@ -21,7 +21,7 @@ namespace InvisibleSoftware.DeviceGateway.Application.Settings.Commands
             var deviceGroup = new DeviceGroup
             {
                 Name = request.DeviceGroup.Name,
-                Code = $"DeviceGroup/{_repository.GenerateCode<DeviceGroup>}",
+                Code = _repository.GenerateCode<DeviceGroup>(),
                 Description = request.DeviceGroup.Description,                
             };
             await _repository.AddAsync(deviceGroup, cancellationToken);

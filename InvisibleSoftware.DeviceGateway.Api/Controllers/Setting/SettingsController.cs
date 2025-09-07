@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Setting
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class SettingsController : ControllerBase
     {

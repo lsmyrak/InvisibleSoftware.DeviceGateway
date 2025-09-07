@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Device
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class DeviceController : ControllerBase
     {
         private readonly ILogger<DeviceController> _logger;

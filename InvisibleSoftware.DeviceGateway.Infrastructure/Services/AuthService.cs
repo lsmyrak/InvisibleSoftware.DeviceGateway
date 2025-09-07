@@ -2,6 +2,7 @@
 using InvisibleSoftware.DeviceGateway.Application.Auth.Commands.Dtos;
 using InvisibleSoftware.DeviceGateway.Application.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -39,8 +40,12 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.Name, user.UserName),              
             };
+            foreach (var role in user.Role)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role.Code));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -59,11 +64,17 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
         public async Task<AuthResult> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken)
         {
 
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
+            var emailUser = await _userManager.FindByEmailAsync(loginDto.Email);
+            if (emailUser == null || !await _userManager.CheckPasswordAsync(emailUser, loginDto.Password))
                 return new AuthResult { Success = false, Errors = new[] { "Invalid credentials" } };
 
-            var token = GenerateJwtToken(user);
+            var user = await _context.Set<User>()
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(m => m.Id == emailUser.Id, cancellationToken);
+
+
+
+            var token = GenerateJwtToken(emailUser);
             return new AuthResult { Success = true, Token = token };
         }
 

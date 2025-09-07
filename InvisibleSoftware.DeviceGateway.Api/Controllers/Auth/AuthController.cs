@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Auth
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly ILogger<AuthController> _logger;
@@ -59,12 +59,23 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Auth
             await _mediator.Send(command);
             return Ok("Role added successfully.");
         }
+        #region lookup
         [HttpGet("lookup-role")]
         [Authorize]
         public async Task<IActionResult> LoopupRole()
         {
             return Ok(await _mediator.Send(new GetRoleLookupQuery()));
         }
+
+        [HttpGet("lookup-user")]
+        [Authorize]
+        public async Task<IActionResult> LoopupUser()
+        {
+            return Ok(await _mediator.Send(new GeUserLookupQuery()));
+        }
+
+        #endregion
+
         [HttpGet("role/{id}")]
         [Authorize]
         public async Task<IActionResult> GetRoleById(Guid id)
