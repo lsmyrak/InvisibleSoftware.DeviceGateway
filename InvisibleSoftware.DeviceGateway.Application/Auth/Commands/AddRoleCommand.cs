@@ -21,6 +21,7 @@ namespace InvisibleSoftware.DeviceGateway.Application.Auth.Commands
         {
             var role = new Role
             {
+                Code = _repository.GenerateCode<Role>(),
                 Name = request.Role.Name,
                 Description = request.Role.Description
             };

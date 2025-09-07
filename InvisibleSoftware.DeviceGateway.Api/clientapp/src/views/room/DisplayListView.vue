@@ -11,7 +11,7 @@ const roomDevices = ref([])
 
 onMounted(async () => {
   try {
-    const response = await api.get('/api/Room/rooms-with-devices')
+    const response = await api.get('/Room/rooms-with-devices')
     roomDevices.value = response.data
   } catch (error) {
   

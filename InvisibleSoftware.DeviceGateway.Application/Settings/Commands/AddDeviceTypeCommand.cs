@@ -21,7 +21,7 @@ namespace InvisibleSoftware.DeviceGateway.Application.Settings.Commands
             var deviceType = new DeviceType
             {
                 Name = request.DeviceType.Name,
-                Code = $"DeviceType/{_repository.GenerateCode<DeviceType>}",
+                Code =_repository.GenerateCode<DeviceType>(),
                 Description = request.DeviceType.Description,
             };
 

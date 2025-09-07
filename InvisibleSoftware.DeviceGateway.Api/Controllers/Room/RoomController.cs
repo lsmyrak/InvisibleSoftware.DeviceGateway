@@ -1,5 +1,4 @@
-﻿using InvisibleSoftware.DeviceGateway.Application.Device.Commands;
-using InvisibleSoftware.DeviceGateway.Application.Room.Commands;
+﻿using InvisibleSoftware.DeviceGateway.Application.Room.Commands;
 using InvisibleSoftware.DeviceGateway.Application.Room.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

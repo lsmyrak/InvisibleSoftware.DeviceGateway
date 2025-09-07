@@ -24,5 +24,24 @@
     "light_2_on": "Światło 2 Włącz",
     "light_2_off": "Światło 2 Wyłącz",
     "light_3_on": "Światło 3 Włącz",
-    "light_3_off": "Światło 3 Wyłącz"
+    "light_3_off": "Światło 3 Wyłącz",
+    "name": "Nazwa",
+    "Name": "Nazwa",
+    "description": "Opis",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "actions": "Akcje",    
+    "UserName": "Nazwa użytkownika",
+    "code":"Kod",
+    "Code": "Kod",
+    "system.user.edit":" Edytuj użytkownika",
+    "system.user.add.role":" Dodaj nową rolę",
+    "system.user.assign.user.role.title":" Przypisz rolę użytkownikowi",
+    "system.user.assign.user.role.user":" Wybierz użytkownika",
+    "system.user.assign.user.role.role":" Wybierz role",
+    "system.settings.user.title":"Ustawienia użytkownika",
+    "system.settings.device.title":"Ustawienia urządzenia"
+
   }

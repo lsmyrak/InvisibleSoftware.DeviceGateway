@@ -18,7 +18,8 @@ namespace InvisibleSoftware.DeviceGateway.Application.Auth.Commands
         }
         public async Task<Guid> Handle(UserRoleManagementCommand request, CancellationToken cancellationToken)
         {
-            var user = await _repository.GetByIdAsync<User>(request.UserId, cancellationToken);
+            var user = await _repository.GetUserById<User>(request.UserId.ToString(), cancellationToken);
+            
             if (user == null)
             {
                 throw new ArgumentException("User not found", nameof(request.UserId));

@@ -11,4 +11,10 @@ export const auth: RouteRecordRaw[] = [
     name: 'register',
     component: () => import('@/views/auth/RegisterView.vue'),
   },
+  {
+    path: '/editUser',
+    name: 'editUser',
+    component: () => import('@/views/settings/user/EditForm.vue'),
+    meta: { requiresAuth: true },
+  },
 ]

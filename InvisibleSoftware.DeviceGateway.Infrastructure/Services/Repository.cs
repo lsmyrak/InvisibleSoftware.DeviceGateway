@@ -58,7 +58,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             int nextNumber = countToday + 1;
             string numberPart = nextNumber.ToString("D4");
 
-            return $"{datePart}/{numberPart}";
+            return $"{nameof(T)}/{datePart}/{numberPart}";
         }
 
         public async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>>? include = null, CancellationToken cancellationToken = default) where T : class
@@ -74,6 +74,11 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
         public async Task<bool> AnyAsync<T>(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default) where T : class
         {
             return await _context.Set<T>().AnyAsync(predicate, cancellationToken);
+        }
+
+        public Task<T> GetUserById<T>(string id, CancellationToken cancellationToken) where T : class
+        {
+            return _context.Set<T>().FindAsync(id, cancellationToken).AsTask();
         }
     }
 }

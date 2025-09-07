@@ -10,7 +10,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
     {
         private readonly ApplicationContext _context;
         private readonly IAuthService _authService;
-        private readonly UserManager<User> _userManager;   
+        private readonly UserManager<User> _userManager;
         public DatabaseSeederService(ApplicationContext context, IAuthService authService, UserManager<User> userManager)
         {
             _context = context;
@@ -25,36 +25,36 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 registerUser.UserName = "admin";
                 registerUser.Password = "AdmiN@123456";
                 registerUser.Email = "admin@admin";
-                
-               var test =  await _authService.RegisterAsync(registerUser, cancellationToken);
+
+                var test = await _authService.RegisterAsync(registerUser, cancellationToken);
 
                 var user = await _userManager.FindByEmailAsync(registerUser.Email);
-                
+
                 var blindsType = new DeviceType { Name = "Blinds", Category = "ESP" };
 
-                var lightsType = new DeviceType { Name = "Lights" ,Category = "ESP" };
-                
+                var lightsType = new DeviceType { Name = "Lights", Category = "ESP" };
+
                 var place = new Place
-                {                    
-                    Name = "Control room",                  
+                {
+                    Name = "Control room",
                 };
 
-                await _context.DeviceTypes.AddRangeAsync(blindsType,lightsType);
+                await _context.DeviceTypes.AddRangeAsync(blindsType, lightsType);
                 await _context.Places.AddAsync(place);
 
                 var users = new List<User>();
                 users.Add(user);
 
                 var room = new Room
-                {                 
+                {
                     Name = "Control room",
                     Users = users,
                     Place = place
                 };
                 await _context.Rooms.AddAsync(room);
-                
+
                 var smallBlindsDevice = new Device
-                {                 
+                {
                     Name = "Small Blinds",
                     DeviceType = blindsType,
                     Room = room,
@@ -70,14 +70,14 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                     Model = "ESP",
                     Manufacturer = "ESP"
                 };
-               
+
 
                 var lightDevice = new Device
                 {
                     Name = "Lights",
                     DeviceType = lightsType,
                     Room = room,
-                    Model= "ESP", 
+                    Model = "ESP",
                     Manufacturer = "ESP"
                 };
 
@@ -86,11 +86,12 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
 
                 var smallBlindsPayloads = new[]
                 {
-            CreatePayload("SmallManualUp", "small_manual_up", "blinds/manual/roleta_mala/command", "100", smallBlindsDevice),
-            CreatePayload("SmallManualDown", "small_manual_down", "blinds/manual/roleta_mala/command", "-100", smallBlindsDevice),
-            CreatePayload("SmallOpen", "small_open", "blinds/cover/roleta_mala/command", "OPEN", smallBlindsDevice),
-            CreatePayload("SmallClose", "small_close", "blinds/cover/roleta_mala/command", "CLOSE", smallBlindsDevice),
-            CreatePayload("SmallStop", "small_stop", "blinds/cover/roleta_mala/command", "STOP", smallBlindsDevice),
+                CreatePayload("SmallManualUp", "small_manual_up", "node00/blinds/manual/small_blind/command", "100", smallBlindsDevice),
+                CreatePayload("SmallManualDown", "small_manual_down", "node00/blinds/manual/small_blind/command", "-100", smallBlindsDevice),
+                CreatePayload("SmallOpen", "small_open", "node00/blinds/cover/small_blind/command", "open", smallBlindsDevice),
+                CreatePayload("SmallClose", "small_close", "node00/blinds/cover/small_blind/command", "close", smallBlindsDevice),
+                CreatePayload("SmallStop", "small_stop", "node00/blinds/cover/small_blind/command", "stop", smallBlindsDevice),
+
         };
 
                 var largeBlindsPayloads = new[]
@@ -116,15 +117,15 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 _context.MqttPayloads.AddRange(largeBlindsPayloads);
                 _context.MqttPayloads.AddRange(lightPayloads);
 
-              
+
                 await _context.SaveChangesAsync(cancellationToken);
 
-                
+
                 AddPayloadOrders(smallBlindsPayloads, smallBlindsDevice);
                 AddPayloadOrders(largeBlindsPayloads, largeBlindsDevice);
                 AddPayloadOrders(lightPayloads, lightDevice);
 
-               await _context.SaveChangesAsync(cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
             }
             return Unit.Value;
         }
@@ -132,7 +133,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
         private MqttPayload CreatePayload(string commandName, string displayName, string topic, string payload, Device device)
         {
             return new MqttPayload
-            {                
+            {
                 CommandName = commandName,
                 DisplayCommandName = displayName,
                 Topic = topic,
@@ -150,7 +151,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 {
                     MqttPayload = payload,
                     Device = device,
-                    DisplayOrder = order++                    
+                    DisplayOrder = order++
                 });
             }
         }

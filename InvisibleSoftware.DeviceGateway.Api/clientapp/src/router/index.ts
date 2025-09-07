@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { rooms } from './room'
 import { auth } from './auth'
+import { settings } from './setting'
 
 const baseRoutes: RouteRecordRaw[] = [
   {
@@ -22,6 +23,7 @@ const routes: RouteRecordRaw[] = [
   ...baseRoutes,
   ...rooms,
   ...auth,
+  ...settings
 
 ]
 
