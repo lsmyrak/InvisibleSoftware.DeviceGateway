@@ -1,12 +1,12 @@
 <template>
   <div class="dashboard">
-    <Tile title="Pokoje" icon="🛏️" @click="goToRooms" />
-    <Tile title="Ustawienia" icon="⚙️" @click="goToSettings" />
+    <ContainerTitle title="Pokoje" icon="🛏️" @click="goToRooms" />
+    <ContainerTitle title="Ustawienia" icon="⚙️" @click="goToSettings" />
   </div>
 </template>
 
 <script setup lang="ts">
-    import Tile from '@/components/ContainerTitle.vue'
+    import ContainerTitle from '@/components/ContainerTitle.vue'
    import { useRouter } from 'vue-router';
 
   const router = useRouter();

@@ -61,7 +61,7 @@ function sortedOrders(device: Device): MqttPayloadOrder[] {
 
 function executeOrder(payloadId: string) {
   
-  api.post(`/api/Room/execute-command/${payloadId}`).catch(error => {    
+  api.post(`/Room/execute-command/${payloadId}`).catch(error => {    
   })
   
 }
