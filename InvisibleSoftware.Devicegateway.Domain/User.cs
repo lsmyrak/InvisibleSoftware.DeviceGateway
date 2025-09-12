@@ -2,7 +2,7 @@
 
 namespace InvisibleSoftware.Devicegateway.Domain
 {
-    public class User : IdentityUser 
+    public class User : IdentityUser
     {
         public string Code { get; set; }
         public string Name { get; set; }

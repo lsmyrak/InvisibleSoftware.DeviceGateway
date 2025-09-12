@@ -2,15 +2,15 @@
 {
     public class AccessibleDeviceWithRoomDto
     {
-        public DeviceDto Device { get; set; } = new DeviceDto();       
-    
-     public static AccessibleDeviceWithRoomDto Convert(Devicegateway.Domain.Device d)
+        public DeviceDto Device { get; set; } = new DeviceDto();
+
+        public static AccessibleDeviceWithRoomDto Convert(Devicegateway.Domain.Device d)
         {
             return new AccessibleDeviceWithRoomDto
             {
                 Device = new DeviceDto
-                {                    
-                    Id = d.Id,                  
+                {
+                    Id = d.Id,
                     Name = d.Name,
                     Description = d.Description,
                     DeviceGroups = d.DeviceGroups.Select(g => new DeviceGroupDto
@@ -24,7 +24,7 @@
                         Id = d.DeviceType.Id,
                         Category = d.DeviceType.Category,
                         Name = d.DeviceType.Name,
-                        Description = d.DeviceType.Description,                        
+                        Description = d.DeviceType.Description,
                     },
                     Room = new RoomDto
                     {
@@ -32,7 +32,7 @@
                         Name = d.Room.Name,
                         Description = d.Room.Description,
                     },
-                    MqttPayloadOrders = d.MqttPayloadOrders.Select(m => new MqttPayloadOrderDto
+                    MqttPayloadOrders = d.MqttPayloadOrders.OrderBy(m => m.DisplayOrder).Select(m => new MqttPayloadOrderDto
                     {
                         MqttPayload = new MqttPayloadDto
                         {

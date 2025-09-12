@@ -7,13 +7,16 @@ namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries
     public class GetRoomLookupQuery : IRequest<LookupResponse<NameRelatedDto>>
     {
     }
+
     public class GetRoomLookupQueryHandler : IRequestHandler<GetRoomLookupQuery, LookupResponse<NameRelatedDto>>
     {
         private readonly IRepository _repository;
+
         public GetRoomLookupQueryHandler(IRepository repository)
         {
             _repository = repository;
         }
+
         public async Task<LookupResponse<NameRelatedDto>> Handle(GetRoomLookupQuery request, CancellationToken cancellationToken)
         {
             var deviceTypes = await _repository.GetAllAsync<Devicegateway.Domain.Room>(cancellationToken);

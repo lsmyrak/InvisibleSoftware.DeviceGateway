@@ -2,7 +2,7 @@
 
 namespace InvisibleSoftware.DeviceGateway.Application.Device.Commands.Dtos
 {
-    public class DeviceTypeDto:BaseDto
+    public class DeviceTypeDto : BaseDto
     {
         public string Category { get; set; }
     }

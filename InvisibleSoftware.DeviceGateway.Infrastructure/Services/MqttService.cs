@@ -19,6 +19,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
 
         //Todo Move to setting File or Database
         private string _brokerAddress = "192.168.253.50";
+
         private int _brokerPort = 1883;
         private string _username = "dev29a";
         private string _password = "Immolation@138";

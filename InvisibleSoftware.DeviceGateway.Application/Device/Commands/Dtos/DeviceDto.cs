@@ -16,6 +16,7 @@
 
         public List<MqttPayloadOrderDto> MqttPayloadOrders { get; set; } = new();
     }
+
     public class MqttPayloadOrderDto
     {
         public Guid MqttPayloadId { get; set; }

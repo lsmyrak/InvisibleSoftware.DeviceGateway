@@ -13,11 +13,51 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Device
     {
         private readonly ILogger<DeviceController> _logger;
         private readonly IMediator _mediator;
+
         public DeviceController(ILogger<DeviceController> logger, IMediator mediator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
+
+        #region Posts devices
+
+        [HttpPost("device/add")]
+        [Authorize(Roles = "Admin,DeviceManager")]
+        public async Task<IActionResult> AddDevice([FromBody] AddDeviceCommand command)
+
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpPost("add-device-type")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddDeviceType([FromBody] AddDeviceTypeCommand command)
+        {
+            if (command == null)
+            {
+                return BadRequest("Command cannot be null.");
+            }
+            await _mediator.Send(command);
+            return Ok("Device type added successfully.");
+        }
+
+        [HttpPost("add-device-group")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddDeviceGroup([FromBody] AddDeviceGroupCommand command)
+        {
+            if (command == null)
+            {
+                return BadRequest("Command cannot be null.");
+            }
+            await _mediator.Send(command);
+            return Ok("Device group added successfully.");
+        }
+
+        #endregion Posts devices
+
+        #region Get devices
 
         [HttpGet("device-with-rooms")]
         [Authorize]
@@ -26,14 +66,21 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Device
             var deviceWithRoom = await _mediator.Send(new GetAccessibleDevicesWithRoomsQuery());
             return Ok(deviceWithRoom);
         }
+        #endregion Get devices
+
+        #region Execute Command
 
         [HttpPost("execute-command/{payloadId}")]
         [Authorize]
         public async Task<IActionResult> ExecuteCommand(Guid payloadId)
         {
-            await _mediator.Send(new RunMqttCommand(payloadId));
+            await _mediator.Send(new ExecuteMqttCommand(payloadId));
             return Ok();
         }
+
+        #endregion Execute Command
+
+        #region lookups
 
         [HttpGet("lookup-device-type")]
         public async Task<LookupResponse<NameRelatedDto>> GetLoopupDeviceTypes()
@@ -46,18 +93,21 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Device
         {
             return await _mediator.Send(new GetDeviceGroupLookupQuery());
         }
+
         [HttpGet("loopup-room")]
         public async Task<LookupResponse<NameRelatedDto>> GetLoopuRooms()
         {
             return await _mediator.Send(new GetRoomLookupQuery());
         }
 
-        [HttpPost("device/add")]
-        [Authorize(Roles = "Admin,DeviceManager")]
-        public async Task<IActionResult> AddDevice([FromBody] AddDeviceCommand command)
-        {           
-            var result = await _mediator.Send(command);
+        [HttpGet("lookup-payload")]
+        [Authorize]
+        public async Task<IActionResult> GetLookupPayload(CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new GetPayloadLookupQuery());
             return Ok(result);
         }
+
+        #endregion lookups
     }
 }

@@ -2,8 +2,6 @@
 using InvisibleSoftware.DeviceGateway.Application.Common.Shared.Dtos;
 using InvisibleSoftware.DeviceGateway.Application.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-
 
 namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries
 {
@@ -14,10 +12,12 @@ namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries
     public class GetDeviceTypeLookupQueryHandler : IRequestHandler<GetDeviceTypeLookupQuery, LookupResponse<NameRelatedDto>>
     {
         private readonly IRepository _repository;
+
         public GetDeviceTypeLookupQueryHandler(IRepository repository)
         {
             _repository = repository;
         }
+
         public async Task<LookupResponse<NameRelatedDto>> Handle(GetDeviceTypeLookupQuery request, CancellationToken cancellationToken)
         {
             var deviceTypes = await _repository.GetAllAsync<DeviceType>(cancellationToken);
@@ -40,6 +40,5 @@ namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries
 
             return response;
         }
-        
     }
 }

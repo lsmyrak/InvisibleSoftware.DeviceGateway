@@ -1,6 +1,4 @@
 ﻿using InvisibleSoftware.DeviceGateway.Application.Auth.Commands;
-using InvisibleSoftware.DeviceGateway.Application.Auth.Commands.Dtos;
-using InvisibleSoftware.DeviceGateway.Application.Auth.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +17,7 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Auth
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
@@ -32,61 +31,18 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Auth
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+
         [Authorize]
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            return Ok();
+            return Ok("This action is not c");
         }
+
         [HttpGet("unregister")]
         public IActionResult Unregister()
         {
-            return Ok();
-        }
-        [HttpPost("add-role")]
-        [Authorize]
-        public async Task<IActionResult> AddRole([FromBody] AddRoleCommand command)
-        {
-            var roleId = await _mediator.Send(command);
-            var role = await _mediator.Send(new GetRoleByIdQuery(roleId));
-            return CreatedAtAction(nameof(GetRoleById), new { id = roleId }, role);
-        }
-
-        [HttpPost("user-role-management")]
-        [Authorize]
-        public async Task<IActionResult> AddRoleToUser([FromBody] UserRoleManagementCommand command)
-        {
-            await _mediator.Send(command);
-            return Ok("Role added successfully.");
-        }
-        #region lookup
-        [HttpGet("lookup-role")]
-        [Authorize]
-        public async Task<IActionResult> LoopupRole()
-        {
-            return Ok(await _mediator.Send(new GetRoleLookupQuery()));
-        }
-
-        [HttpGet("lookup-user")]
-        [Authorize]
-        public async Task<IActionResult> LoopupUser()
-        {
-            return Ok(await _mediator.Send(new GeUserLookupQuery()));
-        }
-
-        #endregion
-
-        [HttpGet("role/{id}")]
-        [Authorize]
-        public async Task<IActionResult> GetRoleById(Guid id)
-        {
-            var role = await _mediator.Send(new GetRoleByIdQuery(id));
-            if (role == null)
-            {
-                return NotFound();
-            }
-            return Ok(role);
-
+            return Ok("This action is not implemented");
         }
     }
 }

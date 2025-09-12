@@ -1,7 +1,6 @@
 ﻿namespace InvisibleSoftware.Devicegateway.Domain
 {
-    public class DeviceGroup :BaseAggregate
+    public class DeviceGroup : BaseAggregate
     {
-
     }
 }

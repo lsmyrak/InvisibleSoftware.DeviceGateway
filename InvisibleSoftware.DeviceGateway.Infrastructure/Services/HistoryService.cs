@@ -6,17 +6,19 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
     public class HistoryService : IHistoryService
     {
         private readonly ApplicationContext _context;
+
         public HistoryService(ApplicationContext context)
         {
             _context = context;
         }
-        public  string GenerateHistoryCode()
+
+        public string GenerateHistoryCode()
         {
             string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
             var today = DateTime.UtcNow.Date;
             var tomorrow = today.AddDays(1);
 
-            int countToday =  _context.Users
+            int countToday = _context.Users
                 .Where(h => h.CreatedAt >= today && h.CreatedAt < tomorrow)
                 .Count();
 

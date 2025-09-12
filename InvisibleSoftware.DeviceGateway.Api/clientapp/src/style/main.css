@@ -1,11 +1,13 @@
 ﻿body {
     font-family: 'Nunito Sans';
+    background-color: #f8f9fa;
+    margin: 10px;
 }
 
-.app {
+/* .app {
     height: 100vh;
     background-color: #efefef;
-}
+} */
 
 .app-header {
     font-size: calc(10px + 2vmin);
@@ -228,7 +230,7 @@
     padding: 10px;
     width: auto;
     height: auto;
-    background-color: lightgray;
+    background-color: f8f9fa;
 }
 
 
@@ -284,4 +286,17 @@
     font-weight: 600;
     color: #9d3b3b;
 }
-
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  min-width: 300px;
+}

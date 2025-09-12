@@ -1,6 +1,6 @@
 ﻿<template>
   <div class="flexi-form-select-lookup">
-    <label :for="id" class="form-label">{{ $t(label) }}</label>
+    <label :for="id" class="form-label">{{ $t(translateLabel) }}</label>
 
 
     <div v-if="multiselect && Array.isArray(modelValue)" class="selected-items">
@@ -64,6 +64,7 @@ interface LookupItem {
 
 const props = defineProps<{
   label: string
+  translatePrefix?: string 
   id: string
   url: string
   modelValue: string | number | (string | number)[] | null
@@ -81,7 +82,14 @@ const searchQuery = ref("")
 const showDropdown = ref(false)
 const columns = ref<LookupColumn[]>([])
 const data = ref<LookupItem[]>([])
+var translateLabel = ""
 
+if (props.translatePrefix === undefined) {
+  translateLabel = props.label
+}
+else {
+  var translateLabel = props.translatePrefix + props.label
+}
 const debouncedQuery = ref("")
 let debounceTimeout: ReturnType<typeof setTimeout> | null = null
 

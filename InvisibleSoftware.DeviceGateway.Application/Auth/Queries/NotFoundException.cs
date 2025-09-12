@@ -1,5 +1,4 @@
-﻿
-namespace InvisibleSoftware.DeviceGateway.Application.Auth.Queries
+﻿namespace InvisibleSoftware.DeviceGateway.Application.Auth.Queries
 {
     [Serializable]
     internal class NotFoundException : Exception
