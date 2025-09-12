@@ -2,16 +2,16 @@
 {
     public class AccessibleDeviceWithRoomDto
     {
-        public DeviceDto Device { get; set; } = new DeviceDto();       
+        public DeviceDto Device { get; set; } = new DeviceDto();
 
-        public static  AccessibleDeviceWithRoomDto Convert(Devicegateway.Domain.Device d)
+        public static AccessibleDeviceWithRoomDto Convert(Devicegateway.Domain.Device d)
         {
             return new AccessibleDeviceWithRoomDto
             {
                 Device = new DeviceDto
-                {                   
+                {
                     Id = d.Id,
-                    IpAddress = d.IpAddress,    
+                    IpAddress = d.IpAddress,
                     Name = d.Name,
                     Description = d.Description,
                     FirmwareVersion = d.FirmwareVersion,
@@ -43,10 +43,10 @@
                         Name = d.DeviceType.Name,
                         Description = d.DeviceType.Description,
                         Category = d.DeviceType.Category,
-                        CreatedAt= d.DeviceType.CreatedAt,
-                        UpdatedAt = d.DeviceType.UpdatedAt,                        
-                    },                    
-                    MqttPayloadOrders = d.MqttPayloadOrders.Select(m => new MqttPayloadOrderDto
+                        CreatedAt = d.DeviceType.CreatedAt,
+                        UpdatedAt = d.DeviceType.UpdatedAt,
+                    },
+                    MqttPayloadOrders = d.MqttPayloadOrders.OrderBy(m => m.DisplayOrder).Select(m => new MqttPayloadOrderDto
                     {
                         MqttPayload = new MqttPayloadDto
                         {
@@ -54,7 +54,7 @@
                             CommandName = m.MqttPayload.CommandName,
                             DisplayCommandName = m.MqttPayload.DisplayCommandName,
                             Topic = m.MqttPayload.Topic,
-                            Payload = m.MqttPayload.Payload,                            
+                            Payload = m.MqttPayload.Payload,
                             Name = m.MqttPayload.Name,
                             Description = m.MqttPayload.Description,
                             CreatedAt = m.MqttPayload.CreatedAt,
@@ -62,7 +62,7 @@
                         },
                         DisplayOrder = m.DisplayOrder
                     }).ToList(),
-                },               
+                },
             };
         }
     }

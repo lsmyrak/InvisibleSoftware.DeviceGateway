@@ -4,15 +4,17 @@ using InvisibleSoftware.DeviceGateway.Application.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace InvisibleSoftware.DeviceGateway.Application.Auth.Queries
+namespace InvisibleSoftware.DeviceGateway.Application.Settings.Queries
 {
-    public class GeUserLookupQuery:IRequest<LookupResponse<NameCodeRelatedDto>>
+    public class GeUserLookupQuery : IRequest<LookupResponse<NameCodeRelatedDto>>
     {
     }
+
     public class GeUserLookupQueryHandler : IRequestHandler<GeUserLookupQuery, LookupResponse<NameCodeRelatedDto>>
     {
         private readonly ILogger<GeUserLookupQueryHandler> _logger;
         private readonly IRepository _repository;
+
         public GeUserLookupQueryHandler(ILogger<GeUserLookupQueryHandler> logger, IRepository repository)
         {
             _repository = repository;

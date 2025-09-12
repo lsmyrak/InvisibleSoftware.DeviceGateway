@@ -2,7 +2,7 @@
 
 namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries.Dtos
 {
-    public class MqttPayloadDto:BaseDto
+    public class MqttPayloadDto : BaseDto
     {
         public string Topic { get; set; }
         public string Payload { get; set; }

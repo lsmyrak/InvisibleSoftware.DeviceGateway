@@ -2,7 +2,7 @@
 
 namespace InvisibleSoftware.DeviceGateway.Application.Room.Queries.Dtos
 {
-    public class DeviceDto: BaseDto
+    public class DeviceDto : BaseDto
     {
         public string IpAddress { get; set; } = string.Empty;
         public virtual List<MqttPayloadOrderDto> MqttPayloadOrders { get; set; } = new List<MqttPayloadOrderDto>();
@@ -12,4 +12,3 @@ namespace InvisibleSoftware.DeviceGateway.Application.Room.Queries.Dtos
         public DateTime? LastSeen { get; set; }
     }
 }
-

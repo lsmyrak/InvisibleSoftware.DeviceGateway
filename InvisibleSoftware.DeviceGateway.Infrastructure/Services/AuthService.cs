@@ -17,6 +17,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly ApplicationContext _context;
+
         public AuthService(IConfiguration configuration, SignInManager<User> signInManager, UserManager<User> userManager, ApplicationContext context)
         {
             _configuration = configuration;
@@ -24,6 +25,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             _userManager = userManager;
             _context = context;
         }
+
         public Task<bool> ChangePasswordAsync(Guid userId, string currentPassword, string newPassword, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
@@ -40,7 +42,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),              
+                new Claim(ClaimTypes.Name, user.UserName),
             };
             foreach (var role in user.Role)
             {
@@ -63,7 +65,6 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
 
         public async Task<AuthResult> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken)
         {
-
             var emailUser = await _userManager.FindByEmailAsync(loginDto.Email);
             if (emailUser == null || !await _userManager.CheckPasswordAsync(emailUser, loginDto.Password))
                 return new AuthResult { Success = false, Errors = new[] { "Invalid credentials" } };
@@ -71,8 +72,6 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             var user = await _context.Set<User>()
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(m => m.Id == emailUser.Id, cancellationToken);
-
-
 
             var token = GenerateJwtToken(emailUser);
             return new AuthResult { Success = true, Token = token };
@@ -101,7 +100,6 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 Code = GenerateUserCode(),
                 Name = registerDto.UserName,
                 Description = $"Created User :  {registerDto.UserName}",
-
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
@@ -140,6 +138,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
         {
             throw new NotImplementedException();
         }
+
         public string GenerateUserCode()
         {
             string datePart = DateTime.UtcNow.ToString("yyyyMMdd");

@@ -1,7 +1,9 @@
 ﻿<template>
     <div class="auth-container">
-        <input v-model="form.email" type="text" :placeholder="$t('email')" />
-        <input v-model="form.password" type="password" :placeholder="$t('password')" />
+       <label class="auth-label">{{$t("login")}}</label> 
+       <input class="auth-input" v-model="form.email" type="text" :placeholder="$t('email')" />
+       <label class="auth-label">{{$t("password")}}</label>
+        <input class="auth-input" v-model="form.password" type="password" :placeholder="$t('password')" />
         <button @click="handleLogin">{{$t('login')}} </button>
     </div>
 </template>

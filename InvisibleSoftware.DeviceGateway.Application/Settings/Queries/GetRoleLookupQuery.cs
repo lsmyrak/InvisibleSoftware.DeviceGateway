@@ -3,22 +3,24 @@ using InvisibleSoftware.DeviceGateway.Application.Common.Shared.Dtos;
 using InvisibleSoftware.DeviceGateway.Application.Interfaces;
 using MediatR;
 
-namespace InvisibleSoftware.DeviceGateway.Application.Auth.Queries
+namespace InvisibleSoftware.DeviceGateway.Application.Settings.Queries
 {
     public class GetRoleLookupQuery : IRequest<LookupResponse<NameRelatedDto>>
     {
     }
+
     public class GetRoleLookupQueryHandler : IRequestHandler<GetRoleLookupQuery, LookupResponse<NameRelatedDto>>
     {
         private readonly IRepository _repository;
+
         public GetRoleLookupQueryHandler(IRepository repository)
         {
             _repository = repository;
         }
+
         public async Task<LookupResponse<NameRelatedDto>> Handle(GetRoleLookupQuery request, CancellationToken cancellationToken)
         {
             var roles = await _repository.GetAllAsync<Role>(cancellationToken);
-
 
             var dto = roles.Where(r => r.isEnabled && !r.IsDeleted)
                 .Select(r => new NameRelatedDto
@@ -37,6 +39,5 @@ namespace InvisibleSoftware.DeviceGateway.Application.Auth.Queries
             };
             return response;
         }
-
     }
 }

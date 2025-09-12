@@ -1,6 +1,6 @@
 ﻿namespace InvisibleSoftware.Devicegateway.Domain
 {
-    public class MqttPayload :BaseAggregate
+    public class MqttPayload : BaseAggregate
     {
         public string Topic { get; set; }
         public string Payload { get; set; }

@@ -31,7 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Settings\Queries\" />
+    <Folder Include="Auth\Queries\Dtos\" />
+    <Folder Include="Room\Commands\" />
   </ItemGroup>
 
 </Project>

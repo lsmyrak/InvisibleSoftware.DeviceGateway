@@ -11,12 +11,14 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
         private readonly ApplicationContext _context;
         private readonly IAuthService _authService;
         private readonly UserManager<User> _userManager;
+
         public DatabaseSeederService(ApplicationContext context, IAuthService authService, UserManager<User> userManager)
         {
             _context = context;
             _authService = authService;
             _userManager = userManager;
         }
+
         public async Task<Unit> SeedInitialDataAsync(CancellationToken cancellationToken)
         {
             if (!_context.DeviceTypes.Any())
@@ -71,7 +73,6 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                     Manufacturer = "ESP"
                 };
 
-
                 var lightDevice = new Device
                 {
                     Name = "Lights",
@@ -91,7 +92,6 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 CreatePayload("SmallOpen", "small_open", "node00/blinds/cover/small_blind/command", "open", smallBlindsDevice),
                 CreatePayload("SmallClose", "small_close", "node00/blinds/cover/small_blind/command", "close", smallBlindsDevice),
                 CreatePayload("SmallStop", "small_stop", "node00/blinds/cover/small_blind/command", "stop", smallBlindsDevice),
-
         };
 
                 var largeBlindsPayloads = new[]
@@ -117,9 +117,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 _context.MqttPayloads.AddRange(largeBlindsPayloads);
                 _context.MqttPayloads.AddRange(lightPayloads);
 
-
                 await _context.SaveChangesAsync(cancellationToken);
-
 
                 AddPayloadOrders(smallBlindsPayloads, smallBlindsDevice);
                 AddPayloadOrders(largeBlindsPayloads, largeBlindsDevice);
@@ -155,6 +153,5 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 });
             }
         }
-
     }
 }

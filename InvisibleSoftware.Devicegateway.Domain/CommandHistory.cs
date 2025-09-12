@@ -6,6 +6,5 @@
         public virtual Device Device { get; set; }
         public virtual MqttPayloadOrder MqttPayloadOrder { get; set; }
         public DateTime CommandTime { get; set; } = DateTime.UtcNow;
-
     }
 }

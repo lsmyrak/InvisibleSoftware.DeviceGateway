@@ -8,6 +8,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
     public class Repository : IRepository
     {
         private readonly ApplicationContext _context;
+
         public Repository(ApplicationContext context)
         {
             _context = context;
@@ -45,6 +46,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
             _context.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
+
         public string GenerateCode<T>() where T : BaseAggregate
         {
             string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
@@ -69,8 +71,8 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 query = include(query);
             }
             return await query.FirstOrDefaultAsync(predicate, cancellationToken);
-
         }
+
         public async Task<bool> AnyAsync<T>(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default) where T : class
         {
             return await _context.Set<T>().AnyAsync(predicate, cancellationToken);

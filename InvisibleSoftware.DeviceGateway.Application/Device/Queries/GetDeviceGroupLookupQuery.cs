@@ -5,18 +5,19 @@ using MediatR;
 
 namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries
 {
-    public class GetDeviceGroupLookupQuery: IRequest <LookupResponse<NameRelatedDto>>
+    public class GetDeviceGroupLookupQuery : IRequest<LookupResponse<NameRelatedDto>>
     {
     }
-
 
     public class GetDeviceGroupLookupQueryHandler : IRequestHandler<GetDeviceGroupLookupQuery, LookupResponse<NameRelatedDto>>
     {
         private readonly IRepository _repository;
+
         public GetDeviceGroupLookupQueryHandler(IRepository repository)
         {
             _repository = repository;
         }
+
         public async Task<LookupResponse<NameRelatedDto>> Handle(GetDeviceGroupLookupQuery request, CancellationToken cancellationToken)
         {
             var deviceTypes = await _repository.GetAllAsync<DeviceGroup>(cancellationToken);
@@ -40,6 +41,5 @@ namespace InvisibleSoftware.DeviceGateway.Application.Device.Queries
 
             return response;
         }
-
     }
 }

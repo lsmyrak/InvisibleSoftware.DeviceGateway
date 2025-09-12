@@ -2,7 +2,7 @@
 
 namespace InvisibleSoftware.DeviceGateway.Application.Room.Queries.Dtos
 {
-    public class RoomDto:BaseDto
+    public class RoomDto : BaseDto
     {
     }
 }
