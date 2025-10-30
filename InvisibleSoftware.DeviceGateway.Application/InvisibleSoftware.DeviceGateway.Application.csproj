@@ -8,8 +8,11 @@
 
   <ItemGroup>
     <Compile Remove="Auth\command\**" />
+    <Compile Remove="Auth\Queries\Dtos\**" />
     <EmbeddedResource Remove="Auth\command\**" />
+    <EmbeddedResource Remove="Auth\Queries\Dtos\**" />
     <None Remove="Auth\command\**" />
+    <None Remove="Auth\Queries\Dtos\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,8 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Auth\Queries\Dtos\" />
-    <Folder Include="Room\Commands\" />
+    <Folder Include="Auth\Queries\" />
   </ItemGroup>
 
 </Project>

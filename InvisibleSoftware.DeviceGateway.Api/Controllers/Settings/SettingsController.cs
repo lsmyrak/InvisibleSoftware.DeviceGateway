@@ -21,8 +21,8 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Settings
 
         #region seed data for roles and admin user and my devices ...
 
-        [HttpPost]
-        [Route("seed-data")]
+        [HttpPost("seed-data")]        
+        [Authorize]
         public async Task<IActionResult> SeedData(CancellationToken cancellationToken)
         {
             await _mediator.Send(new SeedDataCommand(), cancellationToken);
@@ -79,7 +79,13 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Settings
         {
             return Ok(await _mediator.Send(new GeUserLookupQuery()));
         }
+        [HttpGet("command-history")]
 
+        public async Task<IActionResult> GetCommandHistory()
+        {
+            //  return Ok(await _mediator.Send(new GetCommandHistoryQuery()));
+            return Ok();
+        }
         #endregion lookup
     }
 }
