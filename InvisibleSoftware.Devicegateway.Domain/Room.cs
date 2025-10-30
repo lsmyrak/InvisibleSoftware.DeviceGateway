@@ -4,6 +4,6 @@
     {
         public virtual Place Place { get; set; }
         public virtual ICollection<Device> Devices { get; set; }
-        public virtual List<User> Users { get; set; } = new List<User>();
+        public virtual ICollection<User> Users { get; set; } = new List<User>();
     }
 }

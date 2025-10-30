@@ -18,7 +18,7 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Room
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [HttpGet("rooms-with-devices")]
+        [HttpGet("device-with-rooms")]
         [Authorize]
         public async Task<IActionResult> GetRoomsWithDevices()
         {
@@ -30,7 +30,7 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Room
         [Authorize]
         public async Task<IActionResult> GeDevicesByRoom(Guid Id)
         {
-            var roomsWithDevices = await _mediator.Send(new GetAccessibleDevicesQuery());
+            var roomsWithDevices = await _mediator.Send(new GetAccessibleDevicesByRoomQuery(Id));
             return Ok(roomsWithDevices);
         }
     }

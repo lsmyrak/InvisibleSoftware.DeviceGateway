@@ -28,7 +28,7 @@ namespace InvisibleSoftware.DeviceGateway.Infrastructure.Services
                 registerUser.Password = "AdmiN@123456";
                 registerUser.Email = "admin@admin";
 
-                var test = await _authService.RegisterAsync(registerUser, cancellationToken);
+                await _authService.RegisterAsync(registerUser, cancellationToken);
 
                 var user = await _userManager.FindByEmailAsync(registerUser.Email);
 

@@ -22,8 +22,8 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Device
 
         #region Posts devices
 
-        [HttpPost("device/add")]
-        [Authorize(Roles = "Admin,DeviceManager")]
+        [HttpPost("add-device")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddDevice([FromBody] AddDeviceCommand command)
 
         {
@@ -55,18 +55,7 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Device
             return Ok("Device group added successfully.");
         }
 
-        #endregion Posts devices
-
-        #region Get devices
-
-        [HttpGet("device-with-rooms")]
-        [Authorize]
-        public async Task<IActionResult> GetDeviceWithRoom()
-        {
-            var deviceWithRoom = await _mediator.Send(new GetAccessibleDevicesWithRoomsQuery());
-            return Ok(deviceWithRoom);
-        }
-        #endregion Get devices
+        #endregion Posts devices        
 
         #region Execute Command
 
@@ -83,18 +72,21 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Device
         #region lookups
 
         [HttpGet("lookup-device-type")]
+        [Authorize]
         public async Task<LookupResponse<NameRelatedDto>> GetLoopupDeviceTypes()
         {
             return await _mediator.Send(new GetDeviceTypeLookupQuery());
         }
 
         [HttpGet("lookup-device-group")]
+        [Authorize]
         public async Task<LookupResponse<NameRelatedDto>> GetLoopupDeviceGroup()
         {
             return await _mediator.Send(new GetDeviceGroupLookupQuery());
         }
 
         [HttpGet("loopup-room")]
+        [Authorize]
         public async Task<LookupResponse<NameRelatedDto>> GetLoopuRooms()
         {
             return await _mediator.Send(new GetRoomLookupQuery());

@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Auth
 {
@@ -39,10 +40,11 @@ namespace InvisibleSoftware.DeviceGateway.Api.Controllers.Auth
             return Ok("This action is not c");
         }
 
-        [HttpGet("unregister")]
-        public IActionResult Unregister()
+        [HttpPost("unregister")]
+        public async Task<IActionResult> Unregister()
         {
-            return Ok("This action is not implemented");
+            await _mediator.Send(new UnregisterCommand());
+            return Ok("Account deleted");
         }
     }
 }
